@@ -28,9 +28,9 @@ JST PH 1.25mm Wire cable Connector 2 PIN male and female plug Socket
 https://a.aliexpress.com/_mKi6gp2
 
 Also Recommended Wireless USB keyboard and mouse
-------------------------------------------------------------------------
-To Update CKB version via script.
 
+To Update CKB version via script.
+------------------------------------------------------------------------
 
 If the node is running close it. Best to focus the terminal window and press “ctrl+c” and wait for a graceful shutdown. 
 
@@ -68,8 +68,8 @@ Write that and press enter. It’ll then download the files and confirm the inst
 
 Now restart the node.
 
---------------------------------------------------
 Note on ugrading to nvme
+--------------------------------------------------
 
 Dont bother with ultra fast nvme drives as the hoard is only pciex2. note the horrible placement of the nvme 
 slotnon the board. try to get a drive that is relatively flat on the bottom to aid clearance woth the sd card slot.
