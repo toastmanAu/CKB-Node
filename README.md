@@ -8,7 +8,7 @@ Notes:
 1) The above image is preconfigured to output the Opi3B's display to the DSI port, as a result of the available device overlay configuration this disables the HDMI output. If you wish to run this computer on a larger screen via HDMI you will need to disable the DSI display via the "orangepi-config" application.
 2) The STL files were designed to be printed on a Bambu Lab X1C printer, while any 3D printer can be used there are a couple things to note. Firstly, the printed designs you may have seen have been multi-coloured. This was achieved in conjunction with Bambu labs AMS, multi spool sytem, which i then manually asigned colours to the models during the slicing process. The STL files don't different colour and the allocation of these colours is up to you and your own artistic interpretation. All the pieces except the steampunk style face and panels were designed to be coloured by layer height for improved efficiency through minimised filament changes (Anyone with a multi spool system knows what i mean:)). Any similar multi spool system will no doubt work the same. For those not fortunate enough to own a multi colour system i apologise as i to not currently have separate individually printed stl files to simplify your printing process, you are welcome to modify the files to suit your own needs if you have the skills. The Second thing to note is the Bambu Labs X1C has very precise printing. The tolerance gaps for the printed parts/panels vary from 0.05mm to 0.1mm and allow for adhesive free panel exchange. Your printer may require wider tolerances to have the desired effect. I suggest printing the Main body first and possibly test printing some part of the panels to test tolerances before commiting to the full print. The base component holds the screen snugly in place of thew body and if it doesn't fit well you may need to use some superglue to hold it in place. I printedf my parts in PLA+ material but you are free to use what you like, again tolerances for friction fitting parts vary here.   
 
-
+-------------------------------------------------------------------------
 CKB Node Parts List
 
 Orange Pi 3B 8GB+256G EMMC Module+5V3A Type-C Power Supply
@@ -28,7 +28,7 @@ JST PH 1.25mm Wire cable Connector 2 PIN male and female plug Socket
 https://a.aliexpress.com/_mKi6gp2
 
 Also Recommended Wireless USB keyboard and mouse
-
+------------------------------------------------------------------------
 To Update CKB version via script.
 
 
@@ -67,3 +67,19 @@ It will ask you which version you want to install the most recent version is
 Write that and press enter. It’ll then download the files and confirm the installed version. 
 
 Now restart the node.
+
+--------------------------------------------------
+Note on ugrading to nvme
+
+Dont bother with ultra fast nvme drives as the hoard is only pciex2. note the horrible placement of the nvme 
+slotnon the board. try to get a drive that is relatively flat on the bottom to aid clearance woth the sd card slot.
+
+The operating system was built with the orange-pi build process, as such it contain the orangepi-config 
+application. There is a function in the storage section which enables for easy duplication of the operating 
+system to another drive. When off fit your 2230 sized nvme drive to the board. reassemble and repower. 
+open a terminal window and run 
+
+sudo orangepi-config
+
+navigate to the storage selction and select install. follow the orokpts and select your new drive.
+the process will take several minutes.
