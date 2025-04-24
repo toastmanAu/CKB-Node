@@ -28,3 +28,42 @@ JST PH 1.25mm Wire cable Connector 2 PIN male and female plug Socket
 https://a.aliexpress.com/_mKi6gp2
 
 Also Recommended Wireless USB keyboard and mouse
+
+To Update CKB version via script.
+
+
+If the node is running close it. Best to focus the terminal window and press “ctrl+c” and wait for a graceful shutdown. 
+
+Now open Firefox which is in the applications->internet menu.
+
+Go to 
+
+https://github.com/toastmanAu/CKB-Node/blob/main/update_ckb.sh
+
+Hit download.
+
+Firefox should ask where you want to save to best put it in the “home\orangepi\ckb”folder. If it doesn’t ask where you want to save it’ll just go to   ~\Downloads. Once downloaded close Firefox 
+
+Press “ctrl+t” to bring up a new terminal window. 
+
+If Firefox didn’t ask first write
+
+sudo cp ~\Downloads\update_ckb.sh ~\ckb
+
+Press enter
+
+If it did and it’s already in that folder skip that. 
+
+Next either write each line then press enter or copy and paste the following
+
+cd ckb
+sudo chmod +x ./update_ckb.sh
+sudo ./update_ckb.sh
+
+It will ask you which version you want to install the most recent version is 
+
+0.201.0 
+
+Write that and press enter. It’ll then download the files and confirm the installed version. 
+
+Now restart the node.
