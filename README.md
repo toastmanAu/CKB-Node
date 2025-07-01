@@ -48,7 +48,7 @@ Press “ctrl+t” to bring up a new terminal window.
 
 If Firefox didn’t ask first write
 
-sudo cp ~\Downloads\update_ckb.sh ~\ckb
+sudo cp ~/Downloads/update_ckb.sh ~/ckb
 
 Press enter
 
