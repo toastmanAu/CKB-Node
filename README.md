@@ -42,7 +42,7 @@ https://github.com/toastmanAu/CKB-Node/blob/main/update_ckb.sh
 
 Hit download.
 
-Firefox should ask where you want to save to best put it in the “home\orangepi\ckb”folder. If it doesn’t ask where you want to save it’ll just go to   ~\Downloads. Once downloaded close Firefox 
+Firefox should ask where you want to save to best put it in the “home/orangepi/ckb”folder. If it doesn’t ask where you want to save it’ll just go to   ~/Downloads. Once downloaded close Firefox 
 
 Press “ctrl+t” to bring up a new terminal window. 
 
