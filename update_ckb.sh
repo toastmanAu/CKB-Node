@@ -2,7 +2,7 @@
 # CKB Update Script for ARM64 (Ubuntu 22.04)
 set -e
 TEMP_DIR=$(mktemp -d)
-CKB_HOME="$HOME/ckb"
+CKB_HOME="/home/orangepi/ckb"
 # Cleanup function
 cleanup() {
     echo "Cleaning up..."
