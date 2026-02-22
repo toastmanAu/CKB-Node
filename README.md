@@ -1,85 +1,108 @@
-# CKB-Node
-Guide to build a CKB node using an Orange Pi 3B
+# CKB Node — Orange Pi 3B Build Guide
 
-Orange Pi 3b Ubuntu 22.04 XFCE Custom Node Image and Guide
+A complete guide to building a Nervos CKB full node on an Orange Pi 3B, including 3D-printed enclosure files and update tooling.
+
+📁 **Pre-built image (Ubuntu 22.04 XFCE, DSI display configured):**
 https://drive.google.com/drive/folders/1HcHqw6diSt8tZUwNw4w6q0revqnInk0n?usp=sharing
 
-Notes: 
-1) The above image is preconfigured to output the Opi3B's display to the DSI port, as a result of the available device overlay configuration this disables the HDMI output. If you wish to run this computer on a larger screen via HDMI you will need to disable the DSI display via the "orangepi-config" application.
-2) The STL files were designed to be printed on a Bambu Lab X1C printer, while any 3D printer can be used there are a couple things to note. Firstly, the printed designs you may have seen have been multi-coloured. This was achieved in conjunction with Bambu labs AMS, multi spool sytem, which i then manually asigned colours to the models during the slicing process. The STL files don't different colour and the allocation of these colours is up to you and your own artistic interpretation. All the pieces except the steampunk style face and panels were designed to be coloured by layer height for improved efficiency through minimised filament changes (Anyone with a multi spool system knows what i mean:)). Any similar multi spool system will no doubt work the same. For those not fortunate enough to own a multi colour system i apologise as i to not currently have separate individually printed stl files to simplify your printing process, you are welcome to modify the files to suit your own needs if you have the skills. The Second thing to note is the Bambu Labs X1C has very precise printing. The tolerance gaps for the printed parts/panels vary from 0.05mm to 0.1mm and allow for adhesive free panel exchange. Your printer may require wider tolerances to have the desired effect. I suggest printing the Main body first and possibly test printing some part of the panels to test tolerances before commiting to the full print. The base component holds the screen snugly in place of thew body and if it doesn't fit well you may need to use some superglue to hold it in place. I printedf my parts in PLA+ material but you are free to use what you like, again tolerances for friction fitting parts vary here.   
+---
 
--------------------------------------------------------------------------
-CKB Node Parts List
+## Notes on the pre-built image
 
-Orange Pi 3B 8GB+256G EMMC Module+5V3A Type-C Power Supply
-https://a.aliexpress.com/_mtsnkO4
+1. **DSI display:** The image is pre-configured to output to the DSI port via device tree overlay. This disables HDMI output. To switch back to HDMI, open a terminal and run `sudo orangepi-config`, then disable the DSI overlay under the hardware/display section.
 
-5 inch TFT LCD Display Capacitive Touch Screen DSI Connector 800x480
-https://a.aliexpress.com/_mttBpfS
+2. **NVMe upgrade:** The board is PCIe x2 so ultra-fast drives are overkill. Note the awkward placement of the NVMe slot — use a 2230-size drive that is flat on the bottom for clearance above the SD card slot. To clone the OS to NVMe: power off, fit the drive, power on, then run `sudo orangepi-config` → Storage → Install, and follow the prompts. Takes a few minutes.
 
-Heat Sink Set Metal Copper Heatsink Passive Cooling Pad 
-https://a.aliexpress.com/_m0l0tb2
+---
 
-DC5V  3010 30MM 30*30*10MM Cooling Fan Hydraulic Bearing Ball Bearing 2pin
-https://a.aliexpress.com/_mLKDkuY
+## Parts list
 
-JST PH 1.25mm Wire cable Connector 2 PIN male and female plug Socket
-(Make sure you choose 1.25mm 2pin)
-https://a.aliexpress.com/_mKi6gp2
+| Part | Link |
+|------|------|
+| Orange Pi 3B 8GB + 256G eMMC + 5V3A USB-C PSU | https://a.aliexpress.com/_mtsnkO4 |
+| 5" DSI Capacitive Touch LCD 800×480 | https://a.aliexpress.com/_mttBpfS |
+| Passive copper heatsink set | https://a.aliexpress.com/_m0l0tb2 |
+| 30×30×10mm 5V fan (2-pin hydraulic bearing) | https://a.aliexpress.com/_mLKDkuY |
+| JST PH **1.25mm** 2-pin connectors (male + female) | https://a.aliexpress.com/_mKi6gp2 |
 
-Also Recommended Wireless USB keyboard and mouse
+A wireless USB keyboard/mouse is also recommended for initial setup.
 
-To Update CKB version via script.
-------------------------------------------------------------------------
+---
 
-If the node is running close it. Best to focus the terminal window and press “ctrl+c” and wait for a graceful shutdown. 
+## 3D printed enclosure
 
-Now open Firefox which is in the applications->internet menu.
+STL files are in the [`stl files/`](stl%20files/) folder. Designed for a **Bambu Lab X1C** with AMS for multi-colour printing.
 
-Go to 
+- Colour is assigned per-layer height (not per-STL) to minimise filament changes
+- Tolerance gaps are 0.05–0.1mm — test with the main body first before committing to panels
+- If your printer needs looser tolerances, modify the files accordingly
+- The base holds the screen snugly; if your tolerances are wider, a small amount of superglue works fine
+- Printed in PLA+ but any material works
 
-https://github.com/toastmanAu/CKB-Node/blob/main/update_ckb.sh
+---
 
-Hit download.
+## Updating CKB
 
-Firefox should ask where you want to save to best put it in the “home/orangepi/ckb”folder. If it doesn’t ask where you want to save it’ll just go to   ~/Downloads. Once downloaded close Firefox 
+### Quick method (recommended)
 
-Press “ctrl+t” to bring up a new terminal window. 
+```bash
+curl -fsSL https://raw.githubusercontent.com/toastmanAu/CKB-Node/main/update_ckb.sh | sudo bash
+```
 
-If Firefox didn’t ask first write
+The script will auto-detect the latest release and prompt for confirmation.
 
-sudo cp ~/Downloads/update_ckb.sh ~/ckb
+### Manual method
 
-Press enter
+```bash
+# Download the script
+curl -fsSL https://raw.githubusercontent.com/toastmanAu/CKB-Node/main/update_ckb.sh -o update_ckb.sh
+chmod +x update_ckb.sh
 
-If it did and it’s already in that folder skip that. 
+# Run it (optionally pass a specific version)
+sudo ./update_ckb.sh             # auto-detects latest
+sudo ./update_ckb.sh 0.204.0     # specific version
+```
 
-Next either write each line then press enter or copy and paste the following
+### What the script does
 
-cd ckb
-sudo chmod +x ./update_ckb.sh
-sudo ./update_ckb.sh
+- Detects your architecture (aarch64/x86_64) automatically
+- Fetches the latest release version from GitHub if none specified
+- Stops the CKB systemd service gracefully before updating
+- Backs up the current binary as `ckb.vX.Y.Z.bak` before overwriting
+- Preserves `data/`, `ckb.toml`, `ckb-miner.toml`, and any local scripts
+- Verifies the installed version after update
+- Restarts the service if it was running before
 
-It will ask you which version you want to install the most recent version is 
+> **Tip:** If the node is running in a terminal rather than as a systemd service, stop it first with `Ctrl+C` and wait for a graceful shutdown before running the script.
 
-0.201.0 
+---
 
-Write that and press enter. It’ll then download the files and confirm the installed version. 
+## Setting up as a systemd service
 
-Now restart the node.
+If you want the node to start automatically on boot:
 
-Note on ugrading to nvme
---------------------------------------------------
+```bash
+sudo tee /etc/systemd/system/ckb.service > /dev/null <<EOF
+[Unit]
+Description=Nervos CKB Node
+After=network.target
 
-Dont bother with ultra fast nvme drives as the hoard is only pciex2. note the horrible placement of the nvme 
-slotnon the board. try to get a drive that is relatively flat on the bottom to aid clearance woth the sd card slot.
+[Service]
+Type=simple
+User=orangepi
+WorkingDirectory=/home/orangepi/ckb
+ExecStart=/home/orangepi/ckb/ckb run
+Restart=on-failure
+RestartSec=10
 
-The operating system was built with the orange-pi build process, as such it contain the orangepi-config 
-application. There is a function in the storage section which enables for easy duplication of the operating 
-system to another drive. When off fit your 2230 sized nvme drive to the board. reassemble and repower. 
-open a terminal window and run 
+[Install]
+WantedBy=multi-user.target
+EOF
 
-sudo orangepi-config
+sudo systemctl daemon-reload
+sudo systemctl enable ckb
+sudo systemctl start ckb
+```
 
-navigate to the storage selction and select install. follow the orokpts and select your new drive.
-the process will take several minutes.
+Check status: `sudo systemctl status ckb`
+View logs: `journalctl -u ckb -f`
