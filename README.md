@@ -41,6 +41,30 @@ STL files are in the [`stl files/`](stl%20files/) folder. Designed for a **Bambu
 
 ---
 
+## Quick Setup (fresh image)
+
+Run this once on a freshly flashed Orange Pi 3B. Installs CKB, creates a systemd service, disables WiFi power save, and configures sudo:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/toastmanAu/CKB-Node/main/setup.sh | sudo bash
+```
+
+Or with a specific CKB version:
+```bash
+curl -fsSL https://raw.githubusercontent.com/toastmanAu/CKB-Node/main/setup.sh | sudo bash -s 0.204.0
+```
+
+### What setup.sh does
+| Step | Detail |
+|------|--------|
+| Installs CKB | Downloads latest (or specified) aarch64 release from GitHub |
+| Systemd service | Auto-starts on boot, restarts on failure, 60s graceful shutdown |
+| WiFi power save | Disabled permanently (modprobe + udev + NetworkManager) |
+| Sudoers | Adds NOPASSWD for the `orangepi` user |
+| Config | Generates `ckb.toml` (mainnet) if not already present |
+
+---
+
 ## Updating CKB
 
 ### Quick method (recommended)
@@ -78,6 +102,8 @@ sudo ./update_ckb.sh 0.204.0     # specific version
 ---
 
 ## Setting up as a systemd service
+
+`setup.sh` handles this automatically. If you need to do it manually:
 
 If you want the node to start automatically on boot:
 
